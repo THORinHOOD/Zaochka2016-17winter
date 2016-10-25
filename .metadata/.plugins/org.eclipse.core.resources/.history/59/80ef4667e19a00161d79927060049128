@@ -1,0 +1,78 @@
+import java.awt.Desktop;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Scanner;
+
+
+
+
+public class VK {
+
+	private static String APP_ID = "5684526";
+	private static String SCOPE = "262146";
+	
+	private static String token;
+	
+	public static void main(String[] args) throws MalformedURLException, IOException {
+		try {
+            Desktop.getDesktop().browse(new URL(getRequest()).toURI());
+        } catch (URISyntaxException ex) {
+            throw new IOException(ex);
+        }
+		
+		Scanner inConsole = new Scanner(System.in);
+		token = inConsole.nextLine();
+		
+		
+		String url = getFriends(token);
+
+		URL obj = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+		// optional default is GET
+		con.setRequestMethod("GET");
+
+
+		int responseCode = con.getResponseCode();
+		System.out.println("\nSending 'GET' request to URL : " + url);
+		System.out.println("Response Code : " + responseCode);
+
+		BufferedReader in = new BufferedReader(
+		        new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+
+		//print result
+		System.out.println(response.toString());
+		
+	}
+
+	
+	private static String getFriends(String token) {
+		
+		return "https://api.vk.com/method/friends.get?PARAMETERS&access_token=" + token + "&v=V"; 
+		
+		
+	}
+	
+	
+	private static String getRequest() {
+			return "https://oauth.vk.com/authorize?" +
+				   "client_id=" + APP_ID +
+				   "&redirect_uri=" + "https://oauth.vk.com/blank.html" +
+				   "&scope=" + SCOPE +
+				   "&display=" + "page" +
+				   "&response_type=" + "token";
+	}
+	
+}
