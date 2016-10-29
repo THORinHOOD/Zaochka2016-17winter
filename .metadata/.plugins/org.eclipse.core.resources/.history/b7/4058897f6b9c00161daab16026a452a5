@@ -1,0 +1,15 @@
+import java.awt.List;
+import java.math.BigDecimal;
+
+class Staff {
+	public String name;
+	public int age;
+	public String position;
+	public BigDecimal salary;
+	public List<String> skills;
+	
+	public Staff() {
+	}
+	
+	
+}

@@ -1,0 +1,140 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+public class VK {
+
+	private static String APP_ID = "5684526";
+	private static String SCOPE = "262146";
+	
+	
+	private static String USER_ID;
+	private static String GROUP_ID;
+	
+	public static void main(String[] args) throws MalformedURLException, IOException {
+		Scanner in = new Scanner(System.in);
+		USER_ID = in.nextLine();
+		
+	    final StringBuilder result = new StringBuilder();
+        final URL url = new URL(getFriends());
+        try (InputStream is = url.openStream()) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+            reader.lines().forEach(result::append);
+        }
+        //System.out.println(result.toString());
+	     
+        
+        HashMap<String, ArrayList<Friend>> schools = sortFriendsBySchools(result.toString());
+        
+        
+        
+        
+        
+        
+        for (String school : schools.keySet()) {
+        	System.out.println();
+        	System.out.println(school + " : ");
+        	for (int i = 0; i < schools.get(school).size(); i++) {
+        		System.out.print(schools.get(school).get(i).toString());
+        		if (i < schools.get(school).size() - 1) {
+        			System.out.print(", ");
+        		}
+        	}        	
+        	System.out.println();
+        }
+        
+        GROUP_ID = in.nextLine();
+		
+        
+	}
+	
+	
+	private static HashMap<String , ArrayList<Friend>> sortFriendsBySchools(String jsonFriends) {
+		  JSONParser parser = new JSONParser();
+	      
+	      HashMap<String, ArrayList<Friend>> schools = new HashMap<String, ArrayList<Friend>>();
+	        
+	      try {	        	
+	         Object obj = parser.parse(jsonFriends);
+	         JSONObject response = (JSONObject)obj;
+	         JSONArray friends = (JSONArray) response.get("response");
+	  		  
+	         for (int i = 0; i < friends.size(); i++) {
+	            JSONObject JSONFriend = (JSONObject) friends.get(i);
+	        	Friend cur = new Friend( JSONFriend.get("first_name").toString(), JSONFriend.get("last_name").toString());
+	            if (JSONFriend.containsKey("schools") && (((JSONArray) JSONFriend.get("schools")).size() > 0) ) {
+	            
+	                JSONObject curSchool = (JSONObject)((JSONArray) JSONFriend.get("schools")).get(0);
+	            	String curSchoolStr = (curSchool.get("name")).toString(); 
+	            	   
+	            	if (schools.containsKey(curSchoolStr)) {            		   
+	            	   schools.get(curSchoolStr).add(cur);
+	            	} else {
+	            	   ArrayList<Friend> ar = new ArrayList<Friend>();
+	            	   ar.add(cur);
+	            	   schools.put(curSchoolStr, ar);
+	            	}
+	             } else {
+	                if (schools.containsKey("None")) {            		   
+	            	   schools.get("None").add(cur);
+	                } else {
+	            	   ArrayList<Friend> ar = new ArrayList<Friend>();
+	            	   ar.add(cur);
+	            	   schools.put("None", ar);
+	                }
+	             }
+	           }
+	           
+	        } catch (ParseException pe) {
+	           System.out.println("position: " + pe.getPosition());
+	           System.out.println(pe);
+	        }
+	        return schools;
+	}
+	
+	private static String getFriends() {
+		return	"https://api.vk.com/method/friends.get?"
+				+ "&user_id=" + USER_ID
+				+ "&fields=nickname"
+				+ "&fields=schools";
+	}
+	
+	private static String getMembersOfGroup() {
+		return	"https://api.vk.com/method/groups.get?"
+				+ "&group_id=" + GROUP_ID;
+	}	
+}
+
+class Friend {
+	private String first_name;
+	private String last_name;
+	public Friend(String first_name, String last_name) {
+		this.first_name = first_name;
+		this.last_name = last_name;
+	}
+	
+	public String getFirstName() {
+		return first_name;
+	}
+	
+	public String getSecondName() {
+		return last_name;
+	}
+	
+	@Override
+	public String toString() {
+		return first_name + " " + last_name;
+	}
+}

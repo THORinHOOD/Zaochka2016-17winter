@@ -1,0 +1,6 @@
+
+class Response {
+	public Friend friend;
+	public Response() {
+	}
+}

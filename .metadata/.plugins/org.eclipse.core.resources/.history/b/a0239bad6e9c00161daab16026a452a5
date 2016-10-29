@@ -1,0 +1,7 @@
+
+class Response {
+	public Friend friend;
+	public Response() {
+		// TODO Auto-generated constructor stub
+	}
+}

@@ -1,0 +1,7 @@
+
+class Friend {
+	public String first_name;
+	public String last_name;
+	public Friend() {
+	}
+}

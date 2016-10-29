@@ -1,0 +1,6 @@
+
+public class Root {
+	public Response response;
+	public Root() {
+	}
+}

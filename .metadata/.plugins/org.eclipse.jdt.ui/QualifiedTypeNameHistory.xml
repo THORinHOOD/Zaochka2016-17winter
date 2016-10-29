@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="org.codehaus.jackson.map.util.JSONPObject"/>
+<fullyQualifiedTypeName name="java.awt.List"/>
+<fullyQualifiedTypeName name="com.fasterxml.jackson.databind.DeserializationFeature"/>
+<fullyQualifiedTypeName name="org.codehaus.jackson.map.DeserializationConfig.Feature"/>
 <fullyQualifiedTypeName name="java.io.InputStream"/>
+<fullyQualifiedTypeName name="org.json.simple.parser.ParseException"/>
+<fullyQualifiedTypeName name="java.security.acl.Group"/>
 </qualifiedTypeNameHistroy>
