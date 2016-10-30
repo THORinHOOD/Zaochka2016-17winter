@@ -54,6 +54,6 @@ int main() {
 	}
 
 	cout << max;
-	//system("pause"); //мне так нравится
+	system("pause"); //мне так нравится
 	return 0;
 }
