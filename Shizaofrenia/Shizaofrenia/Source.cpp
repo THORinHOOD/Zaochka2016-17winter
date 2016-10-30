@@ -78,10 +78,6 @@ int main() {
 		else if (win_o && !(count_x == count_o)) {
 			cout << "NO";
 		}
-		//если никто не победил, то не должно оставаться пустых мест
-		else if (!win_o && !win_x && have_empty){
-			cout << "NO";
-		}
 		else {
 			cout << "YES";
 		}
